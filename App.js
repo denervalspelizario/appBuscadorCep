@@ -20,6 +20,15 @@ export default function App() {
           autoComplete='postal-address' // auto complete para cep
         />
       </View>
+
+      <View style={styles.containerBtn}>
+        <TouchableOpacity style={[styles.btn, {backgroundColor: '#00CED1'}]}>
+          <Text style={styles.textBtn}>Buscar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn}>
+          <Text style={styles.textBtn}>Limpar</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -48,5 +57,25 @@ const styles = StyleSheet.create({
     width: '90%',
     padding: 10,
     fontSize: 15
+  },
+  containerBtn: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-around'
+  },
+  btn:{
+    height: 50,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: '#00FA9A'
+  },
+  textBtn: {
+    fontSize: 18,
+    color: '#FFF',
+    fontWeight: 'bold'
   }
 });
