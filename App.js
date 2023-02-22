@@ -7,7 +7,7 @@ export default function App() {
 
   const [cep, setCep] = useState('');
   const inputRef = useRef(null)
-  const [cepUser, setCerpUser] = useState(null);  
+  const [cepUser, setCepUser] = useState(null);  
 
   
   function limparInput(){         // 2 - ao clicar (linha 41) ativa a funcao limparInput  
@@ -15,6 +15,7 @@ export default function App() {
       if(setCep !== null){        //  alterar state cep pelo setCep e o torna vazio, e atravez da  
         setCep('');               //  refenrência e do uso da funcao focus ativa o elemento   
         inputRef.current.focus()  //  referenciado no caso o input e também subindo o teclado(linha 8 e 32)
+        setCepUser('');
       }  
   
   }
@@ -33,17 +34,22 @@ export default function App() {
 
       const response = await api.get(`${cep}/json`); // 3  concatena o valor de cep(valor digitado) para
                                                      // em conjunto com /json para puxar dado da api de forma dinamica 
-      //console.log(response.data)  3 dando console.log para verificar se esta funcionando a api
+      //console.log(response.data)  //3 dando console.log para verificar se esta funcionando a api
       Keyboard.dismiss()// 3 apos digitar dado e  não dar erro fecha o teclado 
+
+      setCepUser(response.data) // 4 cepUser recebendo dados 
 
     } catch(error) {
 
-      console.log('ERROR: ' + error)
+      console.log('ERROR: ' + error) // 3 se der erro retornna error + motivo do erro
 
     }
   }
 
-
+  const rua =  cepUser.logradouro // adicionando as variáveis os dados da api (ler linha 40)
+  const bairro = cepUser.bairro
+  const cidade = cepUser.localidade
+  const estado = cepUser.uf
   
   
   return (
@@ -77,11 +83,13 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
+      
       <View style={styles.containerResultado}>
-        <Text style={styles.textItem}></Text>
-        <Text style={styles.textItem}></Text>
-        <Text style={styles.textItem}></Text>
-        <Text style={styles.textItem}></Text>
+                                      {/* Validacao se  variavel estiver undefined ou seja nao recebeu dado ainda ficar vazio senao retorna dado da variavel */}
+        <Text style={styles.textItem}>{(rua !== undefined) ? rua : ''}</Text>
+        <Text style={styles.textItem}>{(bairro !== undefined) ? bairro : ''}</Text>
+        <Text style={styles.textItem}>{(cidade !== undefined)? cidade : '' }</Text>
+        <Text style={styles.textItem}>{(estado !== undefined)? estado: ''}</Text>
       </View>
     </SafeAreaView>
   );
