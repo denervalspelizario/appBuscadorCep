@@ -1,6 +1,5 @@
 import React, {useState, useRef} from 'react';  // 2 importando useRef 
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, Alert, Keyboard } from 'react-native';
-import AsyncStorage  from '@react-native-async-storage/async-storage';  
 import api from './src/service/api'; // 1 importando api com a base da url
 
 export default function App() {
@@ -26,7 +25,7 @@ export default function App() {
         'Atenção',
         'Digite o cep desejado'
       )
-      setCep('');     
+      setCep(''); // esvazia o state cep    
       return; // para finalizar o codigo
     } 
 
@@ -46,8 +45,8 @@ export default function App() {
     }
   }
 
-  const rua =  cepUser.logradouro // adicionando as variáveis os dados da api (ler linha 40)
-  const bairro = cepUser.bairro
+  const rua =  cepUser.logradouro     // adicionando as variáveis os dados da api (ler linha 40)
+  const bairro = cepUser.bairro       // estas variaveis serão usadas pata mostrar os dados (apartir linha 89)
   const cidade = cepUser.localidade
   const estado = cepUser.uf
   
@@ -85,11 +84,11 @@ export default function App() {
 
       
       <View style={styles.containerResultado}>
-                                      {/* Validacao se  variavel estiver undefined ou seja nao recebeu dado ainda ficar vazio senao retorna dado da variavel */}
-        <Text style={styles.textItem}>{(rua !== undefined) ? rua : ''}</Text>
-        <Text style={styles.textItem}>{(bairro !== undefined) ? bairro : ''}</Text>
-        <Text style={styles.textItem}>{(cidade !== undefined)? cidade : '' }</Text>
-        <Text style={styles.textItem}>{(estado !== undefined)? estado: ''}</Text>
+                                      {/* Validacao se  variavel estiver diferente de undefined ou seja nao recebeu dado ainda retorna dado da variavel senao ficar vazio   */}
+        <Text style={styles.textItem}>{(rua !== undefined) ? 'Rua: ' + rua : ''}</Text>
+        <Text style={styles.textItem}>{(bairro !== undefined) ? 'Bairro: ' + bairro : ''}</Text>
+        <Text style={styles.textItem}>{(cidade !== undefined)? 'Cidade: ' + cidade : '' }</Text>
+        <Text style={styles.textItem}>{(estado !== undefined)? 'Estado: ' + estado: ''}</Text>
       </View>
     </SafeAreaView>
   );
