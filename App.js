@@ -1,11 +1,13 @@
 import React, {useState, useRef} from 'react';  // 2 importando useRef 
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, Alert, Keyboard } from 'react-native';
+import AsyncStorage  from '@react-native-async-storage/async-storage';  
 import api from './src/service/api'; // 1 importando api com a base da url
 
 export default function App() {
 
   const [cep, setCep] = useState('');
   const inputRef = useRef(null)
+  const [cepUser, setCerpUser] = useState(null);  
 
   
   function limparInput(){         // 2 - ao clicar (linha 41) ativa a funcao limparInput  
@@ -17,6 +19,33 @@ export default function App() {
   
   }
 
+  async function buscarInput(){  // 3 - ao clicar (linha ) ativa a funcao buscar
+    if(cep === ''){        // se cep estiver vazio 
+      Alert.alert(         // alerta para user 
+        'Atenção',
+        'Digite o cep desejado'
+      )
+      setCep('');     
+      return; // para finalizar o codigo
+    } 
+
+    try {
+
+      const response = await api.get(`${cep}/json`); // 3  concatena o valor de cep(valor digitado) para
+                                                     // em conjunto com /json para puxar dado da api de forma dinamica 
+      //console.log(response.data)  3 dando console.log para verificar se esta funcionando a api
+      Keyboard.dismiss()// 3 apos digitar dado e  não dar erro fecha o teclado 
+
+    } catch(error) {
+
+      console.log('ERROR: ' + error)
+
+    }
+  }
+
+
+  
+  
   return (
     <SafeAreaView style={styles.container}> 
       <View style={styles.containerView}>
@@ -34,7 +63,9 @@ export default function App() {
       </View>
 
       <View style={styles.containerBtn}>
-        <TouchableOpacity style={[styles.btn, {backgroundColor: '#00CED1'}]}>
+        <TouchableOpacity
+          onPress={buscarInput} 
+          style={[styles.btn, {backgroundColor: '#00CED1'}]}>
           <Text style={styles.textBtn}>Buscar</Text>
         </TouchableOpacity>
         
@@ -47,11 +78,10 @@ export default function App() {
       </View>
 
       <View style={styles.containerResultado}>
-        <Text style={styles.textItem}>CEP: 790000</Text>
-        <Text style={styles.textItem}>Logradouro: 790000</Text>
-        <Text style={styles.textItem}>Bairro: 790000</Text>
-        <Text style={styles.textItem}>Cidade: 790000</Text>
-        <Text style={styles.textItem}>Estado: 790000</Text>
+        <Text style={styles.textItem}></Text>
+        <Text style={styles.textItem}></Text>
+        <Text style={styles.textItem}></Text>
+        <Text style={styles.textItem}></Text>
       </View>
     </SafeAreaView>
   );
